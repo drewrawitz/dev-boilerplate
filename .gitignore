@@ -1,3 +1,6 @@
+### Build Folder ###
+build/
+
 ### SASS ###
 .sass-cache
 
@@ -11,6 +14,8 @@ logs
 ### Bower ###
 bower_components
 src/assets/libs
+src/assets/js/vendors
+src/assets/scss/vendors
 
 ### OSX ###
 .DS_Store
