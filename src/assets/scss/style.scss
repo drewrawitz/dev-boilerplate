@@ -1,0 +1,36 @@
+//==================================================================
+// Global Imports
+// Configured component imports for the site/application
+//==================================================================
+
+  // Bourbon & Neat
+  @import "bourbon";
+  @import "neat";
+
+  // Utilities
+  @import 'utilities/variables';
+  @import 'utilities/mixins';
+
+  // Reset
+  @import 'vendors/normalize.css/normalize';
+
+  // Components
+  @import 'components/buttons';
+  @import 'components/navigations';
+  @import 'components/alerts';
+  @import 'components/forms';
+
+  // Layouts
+  @import 'layouts/global';
+  @import 'layouts/header';
+  @import 'layouts/footer';
+  @import 'layouts/content';
+
+  // Pages
+  @import 'pages/home';
+
+  // Vendors
+  // @import 'vendor/name';
+
+  // Generated Styles
+  @import 'generated/icon-font';

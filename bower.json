@@ -1,0 +1,26 @@
+{
+  "name": "dev-boilerplate",
+  "private": true,
+  "devDependencies": {
+    "jquery": "1.11.1",
+    "normalize.css": "~3.0.2"
+  },
+  "install": {
+    "path": {
+      "jquery": "build/assets/js/vendors",
+      "css": "src/assets/scss/vendors",
+      "scss": "src/assets/scss/vendors",
+      "js": "src/assets/js/vendors"
+    },
+    "sources": {
+      "jquery" : "bower_components/jquery/dist/jquery.min.js",
+      "normalize.css": {
+        "mapping": [
+          {
+            "bower_components/normalize.css/normalize.css": "_normalize.scss"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,110 @@
+@font-face {
+  font-family: "icon-font";
+  src: url('../fonts/icons/icon-font.eot');
+  src: url('../fonts/icons/icon-font.eot?#iefix') format('eot'),
+    url('../fonts/icons/icon-font.woff') format('woff'),
+    url('../fonts/icons/icon-font.ttf') format('truetype'),
+    url('../fonts/icons/icon-font.svg#icon-font') format('svg');
+}
+
+%icon {
+  position: relative;
+  display:inline-block;
+  font-family:"icon-font";
+  font-style:normal;
+  font-weight:normal;
+  line-height:1;
+  speak:none;
+  text-decoration:inherit;
+  text-transform:none;
+  text-rendering:optimizeLegibility;
+  vertical-align:middle;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+@function icon-char($filename) {
+  $char: "";
+
+  @if $filename == arrow-down {
+    $char: "\E001";
+  }
+  @if $filename == icon-menu {
+    $char: "\E002";
+  }
+  @if $filename == lock {
+    $char: "\E003";
+  }
+  @if $filename == mail {
+    $char: "\E004";
+  }
+  @if $filename == user {
+    $char: "\E005";
+  }
+
+  @return $char;
+}
+
+@mixin icon($filename) {
+  content: icon-char($filename);
+}
+
+
+.icon-arrow-down{
+  @extend %icon;
+  &:before {
+    @include icon(arrow-down);
+  }
+}
+%icon-arrow-down {
+  @extend %icon;
+  @include icon(arrow-down);
+}
+
+
+.icon-icon-menu{
+  @extend %icon;
+  &:before {
+    @include icon(icon-menu);
+  }
+}
+%icon-icon-menu {
+  @extend %icon;
+  @include icon(icon-menu);
+}
+
+
+.icon-lock{
+  @extend %icon;
+  &:before {
+    @include icon(lock);
+  }
+}
+%icon-lock {
+  @extend %icon;
+  @include icon(lock);
+}
+
+
+.icon-mail{
+  @extend %icon;
+  &:before {
+    @include icon(mail);
+  }
+}
+%icon-mail {
+  @extend %icon;
+  @include icon(mail);
+}
+
+
+.icon-user{
+  @extend %icon;
+  &:before {
+    @include icon(user);
+  }
+}
+%icon-user {
+  @extend %icon;
+  @include icon(user);
+}
