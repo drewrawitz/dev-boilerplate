@@ -16,6 +16,7 @@
     "bower-installer": "^0.8.4",
     "gulp": "^3.6.2",
     "gulp-autoprefixer": "0.0.7",
+    "gulp-cdnizer": "^1.0.3",
     "gulp-clean": "~0.2.4",
     "gulp-concat": "^2.2.0",
     "gulp-csscomb": "^3.0.3",

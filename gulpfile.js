@@ -6,6 +6,7 @@ var autoprefixer = require('gulp-autoprefixer'),
     sass = require('gulp-sass'),
     minifycss = require('gulp-minify-css'),
     csscomb = require('gulp-csscomb'),
+    cdnizer = require("gulp-cdnizer"),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
@@ -74,6 +75,13 @@ gulp.task('images', function() {
     .pipe(gulp.dest(destImages));
 });
 
+gulp.task('cdn', function() {
+  gulp.src("./src/index.html")
+    .pipe(cdnizer([
+      'google:jquery'
+    ]))
+    .pipe(gulp.dest("./build"));
+});
 
 // Cache-busting our assets
 gulp.task('rev-hash', function () {
