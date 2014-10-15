@@ -6,7 +6,6 @@ var autoprefixer = require('gulp-autoprefixer'),
     sass = require('gulp-sass'),
     minifycss = require('gulp-minify-css'),
     csscomb = require('gulp-csscomb'),
-    cdnizer = require("gulp-cdnizer"),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
@@ -17,6 +16,7 @@ var autoprefixer = require('gulp-autoprefixer'),
     clean = require('gulp-clean'),
     runSequence = require('run-sequence'),
     revHash = require('gulp-rev-hash'),
+    replace = require('gulp-replace'),
     package = require('./package.json'),
     bower = require('./bower.json');
 
@@ -50,7 +50,6 @@ gulp.task('styles', function() {
     }))
     .pipe(autoprefixer('last 2 version'))
     .pipe(csscomb())
-    .pipe(header(banner, { package : package }))
     .pipe(gulp.dest(destCSS))
     .pipe(notify({ message: 'Styles task complete' }));
 });
@@ -75,24 +74,21 @@ gulp.task('images', function() {
     .pipe(gulp.dest(destImages));
 });
 
-gulp.task('cdn', function() {
-  gulp.src("./src/index.html")
-    .pipe(cdnizer([
-      'google:jquery'
-    ]))
-    .pipe(gulp.dest("./build"));
-});
+// Copy Files
+gulp.task('copy', [
+    'copy:index.html'
+]);
 
-// Cache-busting our assets
-gulp.task('rev-hash', function () {
-  gulp.src(srcApp+'/index.html')
+gulp.task('copy:index.html', function() {
+  return gulp.src(srcApp+'/index.html')
+    .pipe(replace(/{{JQUERY_VERSION}}/g, bower.devDependencies.jquery))
     .pipe(revHash({assetsDir: destApp}))
     .pipe(gulp.dest(destApp));
 });
 
 // Minify our CSS
 gulp.task('minify', function() {
-  return gulp.src(destCSS+'/styles.css')
+  return gulp.src(destCSS+'/style.css')
     .pipe(minifycss())
     .pipe(header(banner, { package : package }))
     .pipe(gulp.dest(destCSS))
@@ -101,7 +97,7 @@ gulp.task('minify', function() {
 
 // Default task
 gulp.task('build', function(cb) {
-  runSequence(['styles', 'scripts', 'images'],'copy','rev-hash', 'minify',cb);
+  runSequence(['styles', 'scripts'], 'copy', 'minify',cb);
 });
 
 // Watch
