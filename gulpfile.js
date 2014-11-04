@@ -9,6 +9,7 @@ var autoprefixer = require('gulp-autoprefixer'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
+    imagemin = require('gulp-imagemin'),
     notify = require('gulp-notify'),
     header  = require('gulp-header'),
     livereload = require('gulp-livereload'),
@@ -70,8 +71,17 @@ gulp.task('scripts', function() {
 gulp.task('images', function() {
   return gulp.src(srcImages+'/**/*')
     .pipe(newer(destImages))
-    .pipe(imagemin())
+    .pipe(imagemin({
+        progressive: true,
+        svgoPlugins: [{removeViewBox: false}]
+      }))
     .pipe(gulp.dest(destImages));
+});
+
+// Clean Build Folder
+gulp.task('clean', function () {
+  return gulp.src(destApp, {read: false})
+    .pipe(clean());
 });
 
 // Copy Files
@@ -97,7 +107,7 @@ gulp.task('minify', function() {
 
 // Default task
 gulp.task('build', function(cb) {
-  runSequence(['styles', 'scripts'], 'copy', 'minify',cb);
+  runSequence('clean', ['styles', 'scripts', 'images'], 'copy', 'minify',cb);
 });
 
 // Watch
