@@ -3,9 +3,10 @@
 // Configured component imports for the site/application
 //==================================================================
 
-  // Bourbon & Neat
-  @import 'vendors/bourbon/bourbon';
-  @import 'vendors/neat/neat';
+  // Bourbon & Neat & Bitters
+  @import 'bourbon/bourbon';
+  @import 'base/base';
+  @import 'neat/neat';
 
   // Reset
   @import 'vendors/normalize.css/normalize';
