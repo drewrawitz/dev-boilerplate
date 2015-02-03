@@ -22,7 +22,7 @@ var autoprefixer = require('gulp-autoprefixer'),
     bower = require('./bower.json');
 
 // Define some project variables
-var destApp = 'build',
+var destApp = 'public',
     srcApp = 'src',
     destCSS = destApp + '/assets/css',
     destJS = destApp + '/assets/js',
