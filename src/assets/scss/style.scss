@@ -4,15 +4,15 @@
 //==================================================================
 
   // Bourbon & Neat
-  @import "bourbon";
-  @import "neat";
+  @import 'vendors/bourbon/bourbon';
+  @import 'vendors/neat/neat';
+
+  // Reset
+  @import 'vendors/normalize.css/normalize';
 
   // Utilities
   @import 'utilities/variables';
   @import 'utilities/mixins';
-
-  // Reset
-  @import 'vendors/normalize.css/normalize';
 
   // Components
   @import 'components/buttons';
