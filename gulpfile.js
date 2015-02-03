@@ -3,7 +3,8 @@ var gulp = require('gulp');
 
 // Include our plugins
 var autoprefixer = require('gulp-autoprefixer'),
-    sass         = require('gulp-sass'),
+    sass         = require('gulp-ruby-sass'),
+    sourcemaps   = require('gulp-sourcemaps'),
     minifycss    = require('gulp-minify-css'),
     csscomb      = require('gulp-csscomb'),
     uglify       = require('gulp-uglify'),
@@ -42,14 +43,17 @@ var banner = [
   '\n'
 ].join('');
 
-// Styles task
-gulp.task('styles', function() {
-  return gulp.src(srcSASS+'/style.scss')
-    .pipe(sass())
-    .pipe(autoprefixer('last 2 version'))
-    .pipe(csscomb())
+// Sass task
+gulp.task('sass', function() {
+  return sass(srcSASS+'/style.scss', { sourcemap: true })
+    .on('error', function(err) {
+      console.error('Error', err.message);
+    })
+    .pipe(sourcemaps.init())
+      .pipe(autoprefixer('last 2 version'))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(destCSS))
-    .pipe(notify({ message: 'Styles task complete' }));
+    .pipe(notify({ message: 'Sass task complete' }));
 });
 
 // Scripts task
@@ -104,13 +108,13 @@ gulp.task('minify', function() {
 
 // Default task
 gulp.task('build', function(cb) {
-  runSequence('clean', ['styles', 'scripts', 'images'], 'copy', 'minify',cb);
+  runSequence('clean', ['sass', 'scripts', 'images'], 'copy', 'minify',cb);
 });
 
 // Watch
 gulp.task('watch', function() {
   // Watch .scss files
-  gulp.watch(srcSASS+'/**/*.scss', ['styles', 'rev-hash']);
+  gulp.watch(srcSASS+'/**/*.scss', ['sass', 'rev-hash']);
 
   // Watch .js files
   gulp.watch(srcJS+'/**/*.js', ['scripts']);
