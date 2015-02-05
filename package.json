@@ -4,7 +4,7 @@
   "description": "Project Description",
   "author": "Drew Rawitz",
   "email": "email@drewrawitz.com",
-  "url": "http://www.drewrawitz.com",
+  "homepage": "http://www.drewrawitz.com",
   "version": "1.0.0",
   "license": "MIT",
   "repository": {
@@ -31,7 +31,8 @@
     "gulp-sass": "^1.3.2",
     "gulp-sourcemaps": "^1.3.0",
     "gulp-uglify": "^1.1.0",
-    "run-sequence": "^1.0.2"
+    "run-sequence": "^1.0.2",
+    "sassdoc": "^2.0.3"
   },
   "scripts": {
     "postinstall": "node_modules/.bin/bower-installer"

@@ -4,6 +4,7 @@ var gulp = require('gulp');
 // Include our plugins
 var autoprefixer = require('gulp-autoprefixer'),
     sass         = require('gulp-ruby-sass'),
+    sassdoc      = require('sassdoc'),
     sourcemaps   = require('gulp-sourcemaps'),
     minifycss    = require('gulp-minify-css'),
     csscomb      = require('gulp-csscomb'),
@@ -46,14 +47,32 @@ var banner = [
 // Sass task
 gulp.task('sass', function() {
   return sass(srcSASS+'/style.scss', { sourcemap: true })
+
     .on('error', function(err) {
       console.error('Error', err.message);
     })
+
     .pipe(sourcemaps.init())
       .pipe(autoprefixer('last 2 version'))
     .pipe(sourcemaps.write())
+
     .pipe(gulp.dest(destCSS))
     .pipe(notify({ message: 'Sass task complete' }));
+});
+
+gulp.task('sassdoc', function() {
+  var options = {
+    dest: destApp+'/docs',
+    package: 'package.json',
+    groups: {
+      'undefined': 'Bourbon / Neat'
+    },
+    verbose: true
+  };
+
+  return gulp.src(srcSASS+'/**/*.scss')
+    .pipe(sassdoc(options))
+    .pipe(gulp.dest(destCSS));
 });
 
 // Scripts task
