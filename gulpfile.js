@@ -6,6 +6,7 @@ var autoprefixer = require('gulp-autoprefixer'),
     sass         = require('gulp-ruby-sass'),
     sassdoc      = require('sassdoc'),
     sourcemaps   = require('gulp-sourcemaps'),
+    browserSync  = require("browser-sync"),
     minifycss    = require('gulp-minify-css'),
     csscomb      = require('gulp-csscomb'),
     uglify       = require('gulp-uglify'),
@@ -13,7 +14,6 @@ var autoprefixer = require('gulp-autoprefixer'),
     imagemin     = require('gulp-imagemin'),
     notify       = require('gulp-notify'),
     header       = require('gulp-header'),
-    livereload   = require('gulp-livereload'),
     newer        = require('gulp-newer'),
     clean        = require('gulp-clean'),
     runSequence  = require('run-sequence'),
@@ -125,27 +125,27 @@ gulp.task('minify', function() {
     .pipe(notify({ message: 'Minification task complete' }));
 });
 
+// Browser Sync
+gulp.task('browser-sync', function() {
+  browserSync({
+    proxy: '192.168.33.10'
+  });
+});
+
 // Default task
 gulp.task('build', function(cb) {
   runSequence('clean', ['sass', 'scripts', 'images'], 'copy', 'minify',cb);
 });
 
 // Watch
-gulp.task('watch', function() {
+gulp.task('watch', ['browser-sync'], function() {
   // Watch .scss files
-  gulp.watch(srcSASS+'/**/*.scss', ['sass', 'rev-hash']);
+  gulp.watch(srcSASS+'/**/*.scss', ['sass', browserSync.reload]);
 
   // Watch .js files
-  gulp.watch(srcJS+'/**/*.js', ['scripts']);
+  gulp.watch(srcJS+'/**/*.js', ['scripts', browserSync.reload]);
 
   // Watch image files
   gulp.watch(srcImages+'/**/*', ['images']);
 
-  // Create LiveReload server
-  var server = livereload();
-
-  // Watch any files in the app folder, reload on change
-  gulp.watch([srcApp+'/**']).on('change', function(file) {
-    server.changed(file.path);
-  });
 });
