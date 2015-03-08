@@ -19,6 +19,8 @@ bower_components
 src/assets/libs
 src/assets/js/vendors
 src/assets/scss/vendors
+src/assets/scss/bourbon
+src/assets/scss/neat
 
 ### OSX ###
 .DS_Store
