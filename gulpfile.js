@@ -114,11 +114,11 @@
 
   // Copy Files
   gulp.task('copy', [
-      'copy:index.html'
+      'copy:html'
   ]);
 
-  gulp.task('copy:index.html', function() {
-    return gulp.src(srcApp+'/index.html')
+  gulp.task('copy:html', function() {
+    return gulp.src(srcApp+'/*.html')
       .pipe(replace(/{{JQUERY_VERSION}}/g, bower.devDependencies.jquery))
       .pipe(revHash({assetsDir: destApp}))
       .pipe(gulp.dest(destApp));
