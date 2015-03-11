@@ -79,6 +79,8 @@
 
   gulp.task('scripts', function() {
     return gulp.src([
+        '!'+srcJS+'/vendors/jquery/*.js',
+        ''+srcJS+'/vendors/**/*.js',
         ''+srcJS+'/main.js'
       ])
       .pipe(concat('scripts.js'))
@@ -114,14 +116,20 @@
 
   // Copy Files
   gulp.task('copy', [
-      'copy:html'
+      'copy:html',
+      'copy:jquery'
   ]);
 
   gulp.task('copy:html', function() {
     return gulp.src(srcApp+'/*.html')
-      .pipe(replace(/{{JQUERY_VERSION}}/g, bower.devDependencies.jquery))
+      .pipe(replace(/{{JQUERY_VERSION}}/g, bower.dependencies.jquery))
       .pipe(revHash({assetsDir: destApp}))
       .pipe(gulp.dest(destApp));
+  });
+
+  gulp.task('copy:jquery', function() {
+    return gulp.src(srcJS+'/vendors/jquery/*.js')
+      .pipe(gulp.dest(destJS+'/vendors/jquery/'));
   });
 
 

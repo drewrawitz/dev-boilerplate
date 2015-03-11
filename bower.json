@@ -1,23 +1,34 @@
 {
   "name": "dev-boilerplate",
   "private": true,
-  "devDependencies": {
-    "jquery": "2.1.1",
-    "normalize.css": "~3.0.2"
+  "dependencies": {
+    "jquery": "~2.1.3",
+    "normalize.css": "~3.0.2",
+    "fancybox": "~2.1.5"
   },
   "install": {
     "path": {
-      "jquery": "public/assets/js/vendors",
       "css": "src/assets/scss/vendors",
       "scss": "src/assets/scss/vendors",
       "js": "src/assets/js/vendors"
     },
     "sources": {
       "jquery": "bower_components/jquery/dist/jquery.min.js",
+      "fancybox": [
+        "bower_components/fancybox/source/jquery.fancybox.js",
+        "bower_components/fancybox/source/jquery.fancybox.css"
+      ],
       "normalize.css": {
         "mapping": [
           {
             "bower_components/normalize.css/normalize.css": "_normalize.scss"
+          }
+        ]
+      },
+      "fancybox": {
+        "mapping": [
+          {
+            "bower_components/fancybox/source/jquery.fancybox.css": "_fancybox.scss"
           }
         ]
       }
