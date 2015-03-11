@@ -79,8 +79,8 @@
 
   gulp.task('scripts', function() {
     return gulp.src([
-        '!'+srcJS+'/vendors/jquery/*.js',
-        ''+srcJS+'/vendors/**/*.js',
+        '!'+srcJS+'/bower/jquery/*.js',
+        ''+srcJS+'/bower/**/*.js',
         ''+srcJS+'/main.js'
       ])
       .pipe(concat('scripts.js'))

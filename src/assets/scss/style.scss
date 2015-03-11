@@ -9,7 +9,7 @@
   @import 'neat/neat';
 
   // Reset
-  @import 'vendors/normalize.css/normalize';
+  @import 'bower/normalize.css/normalize';
 
   // Utilities
   @import 'utilities/variables';
@@ -30,5 +30,4 @@
   // Pages
   @import 'pages/home';
 
-  // Vendors
-  @import 'vendors/fancybox/fancybox';
+  // Plugins

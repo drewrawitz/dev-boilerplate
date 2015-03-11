@@ -16,9 +16,8 @@ logs
 
 ### Bower ###
 bower_components
-src/assets/libs
-src/assets/js/vendors
-src/assets/scss/vendors
+src/assets/js/bower
+src/assets/scss/bower
 src/assets/scss/bourbon
 src/assets/scss/neat
 
