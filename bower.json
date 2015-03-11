@@ -7,7 +7,7 @@
   },
   "install": {
     "path": {
-      "jquery": "build/assets/js/vendors",
+      "jquery": "public/assets/js/vendors",
       "css": "src/assets/scss/vendors",
       "scss": "src/assets/scss/vendors",
       "js": "src/assets/js/vendors"
