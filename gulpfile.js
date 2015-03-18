@@ -128,8 +128,8 @@
   });
 
   gulp.task('copy:jquery', function() {
-    return gulp.src(srcJS+'/vendors/jquery/*.js')
-      .pipe(gulp.dest(destJS+'/vendors/jquery/'));
+    return gulp.src(srcJS+'/bower/jquery/*.js')
+      .pipe(gulp.dest(destJS+'/bower/jquery/'));
   });
 
 
