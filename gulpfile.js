@@ -14,6 +14,7 @@
       minifycss    = require('gulp-minify-css'),
       uglify       = require('gulp-uglify'),
       concat       = require('gulp-concat'),
+      fileinclude  = require('gulp-file-include'),
       imagemin     = require('gulp-imagemin'),
       header       = require('gulp-header'),
       plumber      = require('gulp-plumber'),
@@ -116,22 +117,24 @@
 
   // Copy Files
   gulp.task('copy', [
-      'copy:html',
       'copy:jquery'
   ]);
-
-  gulp.task('copy:html', function() {
-    return gulp.src(srcApp+'/*.html')
-      .pipe(replace(/{{JQUERY_VERSION}}/g, bower.dependencies.jquery))
-      .pipe(revHash({assetsDir: destApp}))
-      .pipe(gulp.dest(destApp));
-  });
 
   gulp.task('copy:jquery', function() {
     return gulp.src(srcJS+'/bower/jquery/*.js')
       .pipe(gulp.dest(destJS+'/bower/jquery/'));
   });
 
+  gulp.task('fileinclude', ['copy'], function() {
+    gulp.src([srcApp+'/*.html'])
+      .pipe(fileinclude({
+        prefix: '@@',
+        basepath: '@file'
+      }))
+      .pipe(replace(/{{JQUERY_VERSION}}/g, bower.dependencies.jquery))
+      .pipe(revHash({assetsDir: destApp}))
+      .pipe(gulp.dest(destApp));
+  });
 
 /****************************
  * Live Reload Server
@@ -150,11 +153,11 @@
  ****************************/
 
   gulp.task('dev', function(cb) {
-    runSequence('clean', ['styles:dev', 'scripts', 'images'], 'copy',cb);
+    runSequence('clean', ['styles:dev', 'scripts', 'images'], 'fileinclude',cb);
   });
 
   gulp.task('build', function(cb) {
-    runSequence('clean', ['styles:prod', 'scripts', 'images'], 'copy',cb);
+    runSequence('clean', ['styles:prod', 'scripts', 'images'], 'fileinclude',cb);
   });
 
 
@@ -172,7 +175,7 @@
     gulp.watch(srcJS+'/**/*.js', ['scripts', reload]);
 
     // Watch .html files
-    gulp.watch(srcApp+'/*.html', ['copy:html', reload]);
+    gulp.watch(srcApp+'/*.html', ['fileinclude', reload]);
 
     // Watch image files
     gulp.watch(srcImages+'/**/*', ['images']);
