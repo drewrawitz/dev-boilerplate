@@ -97,7 +97,6 @@
 
   gulp.task('images', function() {
     return gulp.src(srcImages+'/**/*')
-      .pipe(newer(destImages))
       .pipe(imagemin({
           progressive: true,
           svgoPlugins: [{removeViewBox: false}]
