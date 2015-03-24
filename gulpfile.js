@@ -17,7 +17,6 @@
       imagemin     = require('gulp-imagemin'),
       header       = require('gulp-header'),
       plumber      = require('gulp-plumber'),
-      newer        = require('gulp-newer'),
       clean        = require('gulp-clean'),
       runSequence  = require('run-sequence'),
       revHash      = require('gulp-rev-hash'),
@@ -96,7 +95,6 @@
 
   gulp.task('images', function() {
     return gulp.src(srcImages+'/**/*')
-      .pipe(newer(destImages))
       .pipe(imagemin({
           progressive: true,
           svgoPlugins: [{removeViewBox: false}]
