@@ -1,0 +1,51 @@
+@font-face {
+  font-family: "customIcons";
+  src: url('../fonts/icons/customIcons.eot');
+  src: url('../fonts/icons/customIcons.eot?#iefix') format('eot'),
+    url('../fonts/icons/customIcons.woff') format('woff'),
+    url('../fonts/icons/customIcons.ttf') format('truetype'),
+    url('../fonts/icons/customIcons.svg#customIcons') format('svg');
+}
+
+%icon {
+  position: relative;
+  display:inline-block;
+  font-family: "customIcons";
+  font-style:normal;
+  font-weight:normal;
+  line-height:1;
+  speak:none;
+  text-decoration:inherit;
+  text-transform:none;
+  text-rendering:optimizeLegibility;
+  vertical-align:middle;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+@function icon-char($filename) {
+  $char: "";
+
+  @if $filename == check {
+    $char: "\E001";
+  }
+
+  @return $char;
+}
+
+@mixin icon($filename) {
+  content: icon-char($filename);
+}
+
+
+.icon-check{
+  @extend %icon;
+  &:before {
+    @include icon(check);
+  }
+}
+%icon-check {
+  @extend %icon;
+  @include icon(check);
+}
+
