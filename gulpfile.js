@@ -136,11 +136,26 @@
  ****************************/
 
   // Start Live Reload Server
-  gulp.task('browser', function() {
-    browserSync({
-      proxy: '192.168.33.10'
-    });
-  });
+  function startBrowserSync() {
+    if (browserSync.active) {
+      return true;
+    }
+
+    console.log('Starting browser-sync');
+
+    var options = {
+      proxy: '192.168.33.10', // scotchbox IP
+      ghostMode: {
+        clicks: true,
+        location: false,
+        forms: true,
+        scrolll: true
+      },
+      notify: false
+    };
+
+    browserSync(options);
+  };
 
 
 /****************************
@@ -161,7 +176,10 @@
  ****************************/
 
   // Watch Task
-  gulp.task('watch', ['dev', 'browser'], function() {
+  gulp.task('watch', ['dev'], function() {
+
+    // Start up the browser with our development site
+    startBrowserSync();
 
     // Watch .scss files
     gulp.watch(srcSASS+'/**/*.scss', ['styles:dev', reload]);
