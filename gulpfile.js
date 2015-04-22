@@ -137,19 +137,20 @@
 
   // Start Live Reload Server
   function startBrowserSync() {
-    if (browserSync.active) {
-      return true;
-    }
 
     console.log('Starting browser-sync');
 
     var options = {
       proxy: '192.168.33.10', // scotchbox IP
+      files: [
+        srcApp + '/**/*.*',
+        '!' + srcSASS + '/**/*.scss',
+        destCSS + '/**/*.css'
+      ],
       ghostMode: {
         clicks: true,
-        location: false,
         forms: true,
-        scrolll: true
+        scroll: true
       },
       notify: false
     };
@@ -182,13 +183,13 @@
     startBrowserSync();
 
     // Watch .scss files
-    gulp.watch(srcSASS+'/**/*.scss', ['styles:dev', reload]);
+    gulp.watch(srcSASS+'/**/*.scss', ['styles:dev']);
 
     // Watch .js files
-    gulp.watch(srcJS+'/**/*.js', ['scripts', reload]);
+    gulp.watch(srcJS+'/**/*.js', ['scripts']);
 
     // Watch .html files
-    gulp.watch(srcApp+'/*.html', ['copy:html', reload]);
+    gulp.watch(srcApp+'/*.html', ['copy:html']);
 
     // Watch image files
     gulp.watch(srcImages+'/**/*', ['images']);
