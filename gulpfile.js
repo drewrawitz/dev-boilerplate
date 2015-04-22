@@ -22,7 +22,8 @@
       revHash      = require('gulp-rev-hash'),
       replace      = require('gulp-replace'),
       package      = require('./package.json'),
-      bower        = require('./bower.json');
+      bower        = require('./bower.json'),
+      util         = require('gulp-util');
 
   // Define some project variables
   var destApp    = 'public',
@@ -119,8 +120,10 @@
   ]);
 
   gulp.task('copy:html', function() {
+    var jquery_version = bower.dependencies.jquery.replace(/[^\d.-]/g, '');
+
     return gulp.src(srcApp+'/*.html')
-      .pipe(replace(/{{JQUERY_VERSION}}/g, bower.dependencies.jquery))
+      .pipe(replace(/{{JQUERY_VERSION}}/g, jquery_version))
       .pipe(revHash({assetsDir: destApp}))
       .pipe(gulp.dest(destApp));
   });
@@ -138,7 +141,7 @@
   // Start Live Reload Server
   function startBrowserSync() {
 
-    console.log('Starting browser-sync');
+    log('Starting Development Server');
 
     var options = {
       proxy: '192.168.33.10', // scotchbox IP
@@ -195,3 +198,22 @@
     gulp.watch(srcImages+'/**/*', ['images']);
 
   });
+
+
+/****************************
+ * Logger
+ ****************************/
+
+  function log(msg, color) {
+    color = typeof color !== 'undefined' ? color : 'blue';
+
+    if (typeof(msg) === 'object') {
+      for (var item in msg) {
+        if (msg.hasOwnProperty(item)) {
+          util.log(util.colors[color](msg[item]));
+        }
+      }
+    } else {
+      util.log(util.colors[color](msg));
+    }
+  }
