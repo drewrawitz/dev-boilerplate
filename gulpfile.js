@@ -91,7 +91,7 @@
       .pipe(gulp.dest(destJS))
   });
 
-  gulp.task('lint', function() {
+  gulp.task('lint', ['scripts'], function() {
     gulp.src(''+srcJS+'/main.js')
       .pipe(jshint())
       .pipe(notify(function (file) {
@@ -210,7 +210,7 @@
     gulp.watch(srcSASS+'/**/*.scss', ['styles:dev']);
 
     // Watch .js files
-    gulp.watch(srcJS+'/**/*.js', ['scripts', 'lint']);
+    gulp.watch(srcJS+'/**/*.js', ['lint']);
 
     // Watch .html files
     gulp.watch(srcApp+'/*.html', ['copy:html']);
