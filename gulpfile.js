@@ -187,6 +187,8 @@
  * Build/Dev Tasks
  ****************************/
 
+  gulp.task('default', ['watch']);
+
   gulp.task('dev', function(cb) {
     runSequence('clean', ['styles:dev', 'scripts', 'images'], 'copy',cb);
   });
