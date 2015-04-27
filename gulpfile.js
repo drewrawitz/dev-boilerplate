@@ -12,11 +12,13 @@
       browserSync  = require("browser-sync"),
       reload       = browserSync.reload,
       minifycss    = require('gulp-minify-css'),
+      jshint       = require('gulp-jshint'),
       uglify       = require('gulp-uglify'),
       concat       = require('gulp-concat'),
       imagemin     = require('gulp-imagemin'),
       header       = require('gulp-header'),
       plumber      = require('gulp-plumber'),
+      notify       = require('gulp-notify'),
       clean        = require('gulp-clean'),
       runSequence  = require('run-sequence'),
       revHash      = require('gulp-rev-hash'),
@@ -89,6 +91,22 @@
       .pipe(gulp.dest(destJS))
   });
 
+  gulp.task('lint', function() {
+    gulp.src(''+srcJS+'/main.js')
+      .pipe(jshint())
+      .pipe(notify(function (file) {
+        if (file.jshint.success) {
+          return false;
+        }
+
+        var errors = file.jshint.results.map(function (data) {
+          if (data.error) {
+            return "(" + data.error.line + ':' + data.error.character + ') ' + data.error.reason;
+          }
+        }).join("\n");
+        return file.relative + " (" + file.jshint.results.length + " errors)\n" + errors;
+      }));
+  });
 
 /****************************
  * Images Task
@@ -140,6 +158,9 @@
 
   // Start Live Reload Server
   function startBrowserSync() {
+    if (browserSync.active) {
+      return;
+    }
 
     log('Starting Development Server');
 
@@ -189,7 +210,7 @@
     gulp.watch(srcSASS+'/**/*.scss', ['styles:dev']);
 
     // Watch .js files
-    gulp.watch(srcJS+'/**/*.js', ['scripts']);
+    gulp.watch(srcJS+'/**/*.js', ['scripts', 'lint']);
 
     // Watch .html files
     gulp.watch(srcApp+'/*.html', ['copy:html']);
