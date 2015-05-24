@@ -1,6 +1,14 @@
 ### Build Folder ###
 public/
 
+### Custom folders ###
+bower_components
+src/assets/js/bower
+src/assets/scss/bower
+src/assets/scss/bourbon
+src/assets/scss/neat
+src/assets/scss/generated/_icon-font.scss
+
 ### SASS ###
 .sass-cache
 
@@ -13,13 +21,6 @@ logs
 
 # Vagrant
 .vagrant
-
-### Bower ###
-bower_components
-src/assets/js/bower
-src/assets/scss/bower
-src/assets/scss/bourbon
-src/assets/scss/neat
 
 ### OSX ###
 .DS_Store

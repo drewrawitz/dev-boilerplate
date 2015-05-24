@@ -20,6 +20,8 @@
       plumber      = require('gulp-plumber'),
       notify       = require('gulp-notify'),
       clean        = require('gulp-clean'),
+      iconfont     = require('gulp-iconfont'),
+      iconfontCss  = require('gulp-iconfont-css'),
       runSequence  = require('run-sequence'),
       revHash      = require('gulp-rev-hash'),
       replace      = require('gulp-replace'),
@@ -32,9 +34,11 @@
       srcApp     = 'src',
       destCSS    = destApp + '/assets/css',
       destJS     = destApp + '/assets/js',
+      destFonts  = destApp + '/assets/fonts',
       destImages = destApp + '/assets/img',
       srcSASS    = srcApp + '/assets/scss',
       srcJS      = srcApp + '/assets/js',
+      srcFonts   = srcApp + '/assets/fonts',
       srcImages  = srcApp + '/assets/img';
 
   // Banner that gets injected at the top of my assets
@@ -121,6 +125,26 @@
       .pipe(gulp.dest(destImages));
   });
 
+/****************************
+ * Icon Font Generator
+ ****************************/
+
+  var fontName = 'icons';
+
+  gulp.task('iconfont', function(){
+    gulp.src([srcImages+'/icons/*.svg'], {base: 'src/assets'})
+      .pipe(iconfontCss({
+        fontName: fontName,
+        path: srcSASS+'/utilities/_icon-font-template.scss',
+        targetPath: '../../../../'+srcSASS+'/generated/_icon-font.scss',
+        fontPath: '../fonts/icons/'
+      }))
+      .pipe(iconfont({
+        fontName: fontName,
+        appendCodepoints: true
+       }))
+      .pipe(gulp.dest(destFonts+'/icons/'));
+  });
 
 /****************************
  * Clean / Copy Files
@@ -190,11 +214,11 @@
   gulp.task('default', ['watch']);
 
   gulp.task('dev', function(cb) {
-    runSequence('clean', ['styles:dev', 'scripts', 'images'], 'copy',cb);
+    runSequence('clean', ['styles:dev', 'scripts', 'images', 'iconfont'], 'copy',cb);
   });
 
   gulp.task('build', function(cb) {
-    runSequence('clean', ['styles:prod', 'scripts', 'images'], 'copy',cb);
+    runSequence('clean', ['styles:prod', 'scripts', 'images', 'iconfont'], 'copy',cb);
   });
 
 
@@ -219,6 +243,9 @@
 
     // Watch image files
     gulp.watch(srcImages+'/**/*', ['images']);
+
+    // Watch for svg icons
+    gulp.watch(srcImages+'/icons/*.svg', ['iconfont']);
 
   });
 
