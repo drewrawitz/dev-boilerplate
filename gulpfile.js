@@ -149,7 +149,7 @@
         clicks: true,
         location: false,
         forms: true,
-        scrolll: true
+        scroll: true
       },
       notify: false
     };
