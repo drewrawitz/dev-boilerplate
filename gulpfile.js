@@ -12,17 +12,20 @@
       browserSync  = require("browser-sync"),
       reload       = browserSync.reload,
       minifycss    = require('gulp-minify-css'),
+      jshint       = require('gulp-jshint'),
       uglify       = require('gulp-uglify'),
       concat       = require('gulp-concat'),
       imagemin     = require('gulp-imagemin'),
       header       = require('gulp-header'),
       plumber      = require('gulp-plumber'),
+      notify       = require('gulp-notify'),
       clean        = require('gulp-clean'),
       runSequence  = require('run-sequence'),
       revHash      = require('gulp-rev-hash'),
       replace      = require('gulp-replace'),
       package      = require('./package.json'),
-      bower        = require('./bower.json');
+      bower        = require('./bower.json'),
+      util         = require('gulp-util');
 
   // Define some project variables
   var destApp    = 'public',
@@ -88,6 +91,22 @@
       .pipe(gulp.dest(destJS))
   });
 
+  gulp.task('lint', ['scripts'], function() {
+    gulp.src(''+srcJS+'/main.js')
+      .pipe(jshint())
+      .pipe(notify(function (file) {
+        if (file.jshint.success) {
+          return false;
+        }
+
+        var errors = file.jshint.results.map(function (data) {
+          if (data.error) {
+            return "(" + data.error.line + ':' + data.error.character + ') ' + data.error.reason;
+          }
+        }).join("\n");
+        return file.relative + " (" + file.jshint.results.length + " errors)\n" + errors;
+      }));
+  });
 
 /****************************
  * Images Task
@@ -119,8 +138,10 @@
   ]);
 
   gulp.task('copy:html', function() {
+    var jquery_version = bower.dependencies.jquery.replace(/[^\d.-]/g, '');
+
     return gulp.src(srcApp+'/*.html')
-      .pipe(replace(/{{JQUERY_VERSION}}/g, bower.dependencies.jquery))
+      .pipe(replace(/{{JQUERY_VERSION}}/g, jquery_version))
       .pipe(revHash({assetsDir: destApp}))
       .pipe(gulp.dest(destApp));
   });
@@ -138,16 +159,20 @@
   // Start Live Reload Server
   function startBrowserSync() {
     if (browserSync.active) {
-      return true;
+      return;
     }
 
-    console.log('Starting browser-sync');
+    log('Starting Development Server');
 
     var options = {
       proxy: '192.168.33.10', // scotchbox IP
+      files: [
+        srcApp + '/**/*.*',
+        '!' + srcSASS + '/**/*.scss',
+        destCSS + '/**/*.css'
+      ],
       ghostMode: {
         clicks: true,
-        location: false,
         forms: true,
         scroll: true
       },
@@ -161,6 +186,8 @@
 /****************************
  * Build/Dev Tasks
  ****************************/
+
+  gulp.task('default', ['watch']);
 
   gulp.task('dev', function(cb) {
     runSequence('clean', ['styles:dev', 'scripts', 'images'], 'copy',cb);
@@ -182,15 +209,34 @@
     startBrowserSync();
 
     // Watch .scss files
-    gulp.watch(srcSASS+'/**/*.scss', ['styles:dev', reload]);
+    gulp.watch(srcSASS+'/**/*.scss', ['styles:dev']);
 
     // Watch .js files
-    gulp.watch(srcJS+'/**/*.js', ['scripts', reload]);
+    gulp.watch(srcJS+'/**/*.js', ['lint']);
 
     // Watch .html files
-    gulp.watch(srcApp+'/*.html', ['copy:html', reload]);
+    gulp.watch(srcApp+'/*.html', ['copy:html']);
 
     // Watch image files
     gulp.watch(srcImages+'/**/*', ['images']);
 
   });
+
+
+/****************************
+ * Logger
+ ****************************/
+
+  function log(msg, color) {
+    color = typeof color !== 'undefined' ? color : 'blue';
+
+    if (typeof(msg) === 'object') {
+      for (var item in msg) {
+        if (msg.hasOwnProperty(item)) {
+          util.log(util.colors[color](msg[item]));
+        }
+      }
+    } else {
+      util.log(util.colors[color](msg));
+    }
+  }

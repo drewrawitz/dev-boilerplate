@@ -1,0 +1,34 @@
+#!/bin/sh
+
+fancy_echo() {
+  local fmt="$1"; shift
+
+  # shellcheck disable=SC2059
+  printf "\n$fmt\n" "$@"
+}
+
+gem_install_or_update() {
+  if gem list "$1" --installed > /dev/null; then
+    fancy_echo "Updating %s ..." "$1"
+    gem update "$@"
+  else
+    fancy_echo "Installing %s ..." "$1"
+    gem install "$@"
+    rbenv rehash
+  fi
+}
+
+if [ ! -d "node_modules" ]; then
+  npm install -g bower-installer
+  npm install
+fi
+
+gem_install_or_update 'bourbon'
+gem_install_or_update 'neat'
+
+cd src/assets/scss
+bourbon install
+neat install
+
+cd ../../../
+gulp watch
