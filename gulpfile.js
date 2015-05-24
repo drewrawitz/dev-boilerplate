@@ -9,7 +9,7 @@
   var autoprefixer = require('gulp-autoprefixer'),
       sass         = require('gulp-sass'),
       sourcemaps   = require('gulp-sourcemaps'),
-      browserSync  = require("browser-sync"),
+      browserSync  = require('browser-sync'),
       reload       = browserSync.reload,
       minifycss    = require('gulp-minify-css'),
       jshint       = require('gulp-jshint'),
