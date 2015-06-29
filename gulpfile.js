@@ -83,7 +83,18 @@
  * Scripts Task
  ****************************/
 
-  gulp.task('scripts', function() {
+  gulp.task('scripts:dev', function() {
+    return gulp.src([
+        '!'+srcJS+'/bower/jquery/*.js',
+        ''+srcJS+'/bower/**/*.js',
+        ''+srcJS+'/dev/**/*.js',
+        ''+srcJS+'/main.js'
+      ])
+      .pipe(concat('scripts.js'))
+      .pipe(gulp.dest(destJS))
+  });
+
+  gulp.task('scripts:prod', function() {
     return gulp.src([
         '!'+srcJS+'/bower/jquery/*.js',
         ''+srcJS+'/bower/**/*.js',
@@ -95,7 +106,7 @@
       .pipe(gulp.dest(destJS))
   });
 
-  gulp.task('lint', ['scripts'], function() {
+  gulp.task('lint', ['scripts:dev'], function() {
     gulp.src(''+srcJS+'/main.js')
       .pipe(jshint())
       .pipe(notify(function (file) {
@@ -214,11 +225,11 @@
   gulp.task('default', ['watch']);
 
   gulp.task('dev', function(cb) {
-    runSequence('clean', ['styles:dev', 'scripts', 'images', 'iconfont'], 'copy',cb);
+    runSequence('clean', ['styles:dev', 'scripts:dev', 'images', 'iconfont'], 'copy',cb);
   });
 
   gulp.task('build', function(cb) {
-    runSequence('clean', ['styles:prod', 'scripts', 'images', 'iconfont'], 'copy',cb);
+    runSequence('clean', ['styles:prod', 'scripts:prod', 'images', 'iconfont'], 'copy',cb);
   });
 
 
